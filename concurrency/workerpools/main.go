@@ -24,11 +24,11 @@ func main() {
 	results := make(chan int, numJobs)
 
 	// spinned up 3 go routines/workers ready to read from jobs channel
-	for w := 0; w < numWorkers; w++ {
+	for w := range numWorkers {
 		go worker(w, jobs, results)
 	}
 
-	for j := 0; j < numJobs; j++ {
+	for j := range numJobs {
 		jobs <- j
 	}
 	close(jobs)
@@ -38,5 +38,4 @@ func main() {
 	for range numJobs {
 		<-results
 	}
-
 }
